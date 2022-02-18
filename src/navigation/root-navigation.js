@@ -10,6 +10,7 @@ import { StackActions } from '@react-navigation/native';
 import { View, Dimensions, Platform } from "react-native";
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { Text } from "../components";
+import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 
 const Tab = createBottomTabNavigator();
@@ -74,7 +75,8 @@ const rootTab = () => (
 
         <Tab.Screen
             component={HomeStack}
-            name={screenName.homeStack} />
+            name={screenName.homeStack}
+        />
 
         <Tab.Screen
             component={BagScreen}
@@ -218,35 +220,61 @@ const tabBarOption = ({ route }) => {
             let iconName;
             let tabName;
             if (route.name === screenName.homeStack) {
-                iconName = 'home';
-                tabName = 'Home';
+                return (
+                    <View
+                        style={{
+                            alignItems: 'center',
+                            // justifyContent: 'center',
+                            // alignItems: 'center',
+                        }}
+                    // style={focused && { backgroundColor: COLORS.facebook }}
+                    >
+                        <EntypoIcon
+                            name='home'
+                            color={focused ? COLORS.black : COLORS.gray}
+                            size={focused ? 32 : 26} />
+
+                        <Text tabName focused={focused}>Home</Text>
+
+                    </View>
+                )
+
             } else if (route.name === screenName.userStack) {
-                iconName = 'user'
-                tabName = 'User'
+                return (
+                    <View
+                        style={{
+                            alignItems: 'center',
+                        }}
+                    // style={focused && { backgroundColor: COLORS.facebook }}
+                    >
+                        <AwesomeIcon
+                            name='user'
+                            color={focused ? COLORS.black : COLORS.gray}
+                            size={focused ? 32 : 26} />
+
+                        <Text tabName focused={focused}>User</Text>
+
+                    </View>
+                )
             } else {
-                iconName = 'shopping-bag'
-                tabName = 'Bag'
+                return (
+                    <View
+                        style={{
+                            alignItems: 'center',
+                        }}
+                    >
+                        <EntypoIcon
+                            name='shopping-bag'
+                            color={focused ? COLORS.black : COLORS.gray}
+                            size={focused ? 32 : 26} />
+
+                        <Text tabName focused={focused}>Bag</Text>
+
+                    </View>
+                )
+
             }
-            return (
-                <View
-                    style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                // style={focused && { backgroundColor: COLORS.facebook }}
-                >
-                    <EntypoIcon
-                        name={iconName}
-                        color={focused ? COLORS.black : COLORS.gray}
-                        size={32} />
 
-                    <Text tabName focused={focused}>
-                        {tabName}
-                    </Text>
-
-                </View>
-            )
         }
     }
 }

@@ -52,11 +52,12 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     tabName: {
-        fontSize: 15,
+        fontSize: 13,
         fontWeight: '500',
         color: COLORS.gray,
     },
     focused: {
+        fontSize: 15,
         color: COLORS.black,
     }
 })
