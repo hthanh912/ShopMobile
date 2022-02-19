@@ -4,7 +4,7 @@ import { API_URL } from '@env'
 
 
 export const getProductsByQuery = (pageNumber, query) => {
-    
+
     let queryString = '';
 
     for (const key in query) {
@@ -20,7 +20,7 @@ export const getProductsByQuery = (pageNumber, query) => {
 }
 
 export const getProductsBySearch = (pageNumber, query) => {
-    
+
     return axios({
         method: 'GET',
         url: `${API_URL}/products/search?query=${query}&page=${pageNumber}&limit=10`,
@@ -78,6 +78,13 @@ export const getProduct = (slug) => {
     return axios({
         method: 'GET',
         url: `${API_URL}/products/${slug}`,
+    })
+}
+
+export const getBrand = (brandId) => {
+    return axios({
+        method: 'GET',
+        url: `${API_URL}/brands/${brandId}`,
     })
 }
 

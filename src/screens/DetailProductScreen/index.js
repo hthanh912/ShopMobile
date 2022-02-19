@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Image, TouchableOpacity, Modal as RNModal, ScrollView, Animated, Dimensions, BackHandler } from 'react-native';
 import Snackbar from 'react-native-snackbar'
 import { styles } from './styles.DetailProductScreen'
-import { getProduct, getRandomProduct } from '../../api/product';
+import { getBrand, getProduct, getRandomProduct } from '../../api/product';
 import { goBack } from '../../navigation/root-navigation';
 import { SliderBox } from "react-native-image-slider-box";
 import { capitalizeFirstLetter, getFullResUrl } from '../../utils';
@@ -32,6 +32,7 @@ const DetailProductScreen = ({ route }) => {
     const [visibleModalSize, setVisibleModalSize] = useState(false);
     const [listRelativeProduct, setListRelativeProduct] = useState([]);
     const [listBrandProduct, setListBrandProduct] = useState([]);
+    const [brand, setBrand] = useState();
 
     const isLoggedIn = useSelector(getIsLoggedInSelector);
     const listFavorite = useSelector(getListFavoriteSelector);
@@ -77,12 +78,13 @@ const DetailProductScreen = ({ route }) => {
 
             axios.all([
                 getRandomProduct(10, product.category, null),
-                getRandomProduct(10, null, product.brand)
+                getRandomProduct(10, null, product.brand),
+                getBrand(product.brand),
 
-            ]).then(axios.spread((resultRelative, resultBrand) => {
-                setListRelativeProduct(resultRelative.data.content);
-                setListBrandProduct(resultBrand.data.content);
-
+            ]).then(axios.spread((resultRelativeProduct, resultBrandProduct, resultBrand) => {
+                setListRelativeProduct(resultRelativeProduct.data.content);
+                setListBrandProduct(resultBrandProduct.data.content);
+                setBrand(resultBrand.data.content);
             }))
 
         }
@@ -347,7 +349,7 @@ const DetailProductScreen = ({ route }) => {
                         selectedSize={selectedSize}
                         onPressItem={(size) => setSelectedSize(size)} />
 
-                    <Text title style={{ marginHorizontal: 20 }}>About</Text>
+                    <Text title style={{ marginHorizontal: 20 }}>Overview</Text>
                     <Text info style={styles.description}>{description}</Text>
 
                     {listRelativeProduct.length > 0 &&
@@ -356,9 +358,11 @@ const DetailProductScreen = ({ route }) => {
                             data={listRelativeProduct} />
                     }
 
-                    {listBrandProduct.length > 0 &&
+                    {listBrandProduct.length > 0 && brand &&
                         <HorizontalList
-                            title={`More from ${capitalizeFirstLetter(product.brand)}`}
+                            title={`More from ${brand.name}`}
+                            logo={getFullResUrl(brand.logo)}
+                            description={brand.short_description}
                             data={listBrandProduct} />
                     }
 

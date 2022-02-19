@@ -87,8 +87,8 @@ const ProductsScreen = ({ route }) => {
     renderLabelProduct = ({ route, focused }) => (
         <Text style={{
             color: focused ? COLORS.black : COLORS.darkGray,
-            fontSize: 20,
-            fontWeight: '600'
+            fontSize: 18,
+            fontWeight: '500'
         }}>
             {route.title}
         </Text>
@@ -100,7 +100,7 @@ const ProductsScreen = ({ route }) => {
             scrollEnabled={true}
             renderLabel={renderLabelProduct}
             tabStyle={{ width: 80, height: 40 }}
-            style={{ backgroundColor: COLORS.whiteBackground, shadowOpacity: 0, marginBottom: 10, elevation: 0 }}
+            style={{ backgroundColor: COLORS.whiteBackground, shadowOpacity: 0, marginBottom: 10, elevation: 0}}
             //tabBarUnderlineStyle={{ backgroundColor: COLORS.black }}
             indicatorStyle={{
                 backgroundColor: COLORS.black,
