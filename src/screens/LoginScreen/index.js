@@ -128,6 +128,7 @@ const LoginScreen = () => {
                         <TextInput
                             onSubmitEditing={() => inputPasswordRef.current.focus()}
                             style={{ width: '80%' }}
+                            returnKeyType="next"
                             rightIcon={TextInputType.email}
                             value={values.email}
                             secureTextEntry={false}

@@ -131,6 +131,7 @@ const HomeScreen = () => {
                 >
                     <TextInput
                         ref={searchInputRef}
+                        returnKeyType='search'
                         type={TextInputType.text}
                         rightIcon={TextInputType.search}
                         onPressRight={onPressSearch}
