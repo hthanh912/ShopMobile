@@ -112,13 +112,14 @@ const ProductsTabContent = ({ category, productCollection, isFeature, gender, se
             try {
                 let result;
                 if (category) {
-                    result = await getProductsByQuery(pageNumber + 1, { category: category });
+                    console.log(category);
+                    result = await getProductsByQuery(pageNumber + 1, { category, gender });
                 } else if (productCollection) {
                     result = await getProductsByCollection(pageNumber + 1, productCollection);
                 } else if (isFeature) {
-                    result = await getProductsByQuery(pageNumber + 1, { feature: true });
+                    result = await getProductsByQuery(pageNumber + 1, { feature: true, gender });
                 } else if (searchString) {
-                    result = await getProductsBySearch(pageNumber, searchString)
+                    result = await getProductsBySearch(pageNumber + 1, searchString)
                 }
 
                 const listMoreProduct = result.data.content;
@@ -214,7 +215,8 @@ const ProductsTabContent = ({ category, productCollection, isFeature, gender, se
                 data={listView}
                 keyExtractor={item => {
                     //console.log(item._id);
-                    return item._id}}
+                    return item._id
+                }}
                 renderItem={({ item, index }) =>
                     <ProductCard
                         isFavorited={checkFavorite(item)}
