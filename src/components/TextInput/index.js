@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useRef, useEffect } from 'react'
 import { View, StyleSheet, Touchable, TouchableOpacity } from 'react-native'
 import { TextInput as RNTextInput } from 'react-native'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
@@ -6,37 +6,52 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import { COLORS } from '../../constants'
 import Text from '../Text'
 
-export default class TextInput extends Component {
+const useForwardedRef = (ref) =>{
+    const innerRef = useRef(null);
+ 
+    useEffect(() => {
+      if (!ref) return;
+      if (typeof ref === 'function') {
+        ref(innerRef.current);
+      } else {
+        ref.current = innerRef.current;
+      }
+    });
+  
+    return innerRef;
+ }
+ 
 
-    state = {
-        isHidden: this.props.secureTextEntry,
-    }
+const TextInput = React.forwardRef((props, ref) => {
 
-    toggleHidePassword = () => {
-        this.setState({ isHidden: !this.state.isHidden })
+    const forwardedRef = useForwardedRef(ref);
+    const [isHidden, setIsHidden] = useState(props.secureTextEntry);
+
+    const toggleHidePassword = () => {
+        //this.setState({ isHidden: !this.state.isHidden })
+        setIsHidden(!isHidden)
     }
 
     renderIconRight = (inputType, onPressRight) => {
-        const { isHidden } = this.state;
         switch (inputType) {
             case type.email:
                 return (<EntypoIcon style={styles.icon} name='mail' size={15} color={COLORS.black} />)
             case type.password:
                 return (
                     <TouchableOpacity
-                        onPress={this.toggleHidePassword}
+                        onPress={toggleHidePassword}
                         style={{ height: 50, justifyContent: 'center' }}
                     >
                         {isHidden ?
-                            <EntypoIcon style={styles.icon} isHidden name='eye-with-line' size={15} color={COLORS.black}/>
-                            : <EntypoIcon style={styles.icon} isHidden name='eye' size={15} color={COLORS.black}/>}
+                            <EntypoIcon style={styles.icon} isHidden name='eye-with-line' size={15} color={COLORS.black} />
+                            : <EntypoIcon style={styles.icon} isHidden name='eye' size={15} color={COLORS.black} />}
                     </TouchableOpacity>
                 )
             case type.search:
                 return (
                     <TouchableOpacity
                         onPress={onPressRight}>
-                        <FeatherIcon style={{marginRight: 5}} name='search' size={25} color={COLORS.darkGray} />
+                        <FeatherIcon style={{ marginRight: 5 }} name='search' size={25} color={COLORS.darkGray} />
                     </TouchableOpacity>
                 );
             default:
@@ -48,34 +63,36 @@ export default class TextInput extends Component {
         //const { isHidden } = this.state;
         switch (inputType) {
             case type.text:
-                return (<EntypoIcon style={styles.icon} name='edit' size={15} color={COLORS.black}/>)
+                return (<EntypoIcon style={styles.icon} name='edit' size={15} color={COLORS.black} />)
             default:
-                return (<EntypoIcon style={styles.icon} name='mail' size={15} color={COLORS.black}/>)
+                return (<EntypoIcon style={styles.icon} name='mail' size={15} color={COLORS.black} />)
         }
     }
 
-    render() {
-        const { title, touched, leftIcon, rightIcon, errorText, capitalize, style, onPressRight } = this.props;
-        const { isHidden } = this.state;
-        return (
-            <View style={[styles.conatainer, style]}>
-                {title && <Text style={styles.title} titleTextInput>{title}</Text>}
-                <View style={[styles.inputcontainer, (touched && errorText) ? styles.errorStyle : styles.defaultStyle]}>
-                    {leftIcon && this.renderIconLeft(leftIcon)}
-                    <RNTextInput
-                        {...this.props}
-                        style={styles.inputStyle}
-                        secureTextEntry={isHidden}
-                    />
-                    {rightIcon && this.renderIconRight(rightIcon, onPressRight)}
-                </View>
-
-                <Text style={styles.textError}>{(touched && errorText) ? errorText : ' '}</Text>
-
+    const { title, touched, leftIcon, rightIcon, errorText, capitalize, style, onPressRight, onSubmitEditing } = props;
+    return (
+        <View style={[styles.conatainer, style]}>
+            {title && <Text style={styles.title} titleTextInput>{title}</Text>}
+            <View style={[styles.inputcontainer, (touched && errorText) ? styles.errorStyle : styles.defaultStyle]}>
+                {leftIcon && this.renderIconLeft(leftIcon)}
+                <RNTextInput
+                    {...props}
+                    ref={forwardedRef}
+                    style={styles.inputStyle}
+                    secureTextEntry={isHidden}
+                    onSubmitEditing={onSubmitEditing}
+                />
+                {rightIcon && this.renderIconRight(rightIcon, onPressRight)}
             </View>
-        )
-    }
-}
+
+            <Text style={styles.textError}>{(touched && errorText) ? errorText : ' '}</Text>
+
+        </View>
+    )
+
+});
+
+export default TextInput;
 
 export const type = {
     text: 'text',

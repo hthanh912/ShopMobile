@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { getIsLoggedInSelector } from "../../redux/selectors";
 import Modal from 'react-native-modal'
 import { useRef } from "react";
+import KeyboardAvoidingView from "react-native/Libraries/Components/Keyboard/KeyboardAvoidingView";
 
 
 const renderScene = SceneMap({
@@ -23,6 +24,8 @@ const HomeScreen = () => {
     const layout = useWindowDimensions();
     const isLoggedIn = useSelector(getIsLoggedInSelector);
 
+    const searchInputRef = useRef(null);
+
     const [isSearchVisible, setIsSearchVisible] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const [index, setIndex] = useState(0);
@@ -31,8 +34,6 @@ const HomeScreen = () => {
         { key: 'women', title: 'Women' },
         { key: 'kids', title: 'Kids' },
     ]);
-
-    const searchInputRef = useRef(null);
 
     useEffect(() => {
         setSearchValue(searchValue);
@@ -81,10 +82,6 @@ const HomeScreen = () => {
                     name={smallBtnName.search}
                     onPress={() => {
                         setIsSearchVisible(true);
-                        setTimeout(() => {
-                            searchInputRef.current?.focus();
-
-                        }, 1000)
                         //searchInputRef.current?.focus();
                         //console.log(searchValue);
                         //setSearchValue(searchValue);
@@ -108,37 +105,41 @@ const HomeScreen = () => {
     }
 
     return (
-        <BackgroundView edges={['top']}>
+        <BackgroundView edges={['top']}>                
 
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                style={{ backgroundColor: COLORS.whiteBackground }}
-                initialLayout={{ width: layout.width }}
-                renderTabBar={renderTabBarHome}
-            />
-
-            <Modal
-                style={{ justifyContent: 'flex-start', marginHorizontal: 20, marginTop: 40 }}
-                isVisible={isSearchVisible}
-                onBackdropPress={() => setIsSearchVisible(false)}
-                onBackButtonPress={() => setIsSearchVisible(false)}
-                animationIn='fadeIn'
-                animationOut='fadeOut'
-            >
-                <TextInput
-                    type={TextInputType.text}
-                    rightIcon={TextInputType.search}
-                    onPressRight={onPressSearch}
-                    onChangeText={newText => setSearchValue(newText)}
-                    value={searchValue}
-                    onSubmitEditing={onPressSearch}
+                <TabView
+                    navigationState={{ index, routes }}
+                    renderScene={renderScene}
+                    onIndexChange={setIndex}
+                    style={{ backgroundColor: COLORS.whiteBackground }}
+                    initialLayout={{ width: layout.width }}
+                    renderTabBar={renderTabBarHome}
                 />
 
-            </Modal>
+                <Modal
+                    style={{ justifyContent: 'flex-start', marginHorizontal: 20, marginTop: 40 }}
+                    isVisible={isSearchVisible}
+                    onBackdropPress={() => setIsSearchVisible(false)}
+                    onBackButtonPress={() => setIsSearchVisible(false)}
+                    animationIn='fadeIn'
+                    animationOut='fadeOut'
+                    onShow={() => {
+                        setTimeout(() => {
+                            searchInputRef.current.focus();
+                        }, 100)
+                    }}
+                >
+                    <TextInput
+                        ref={searchInputRef}
+                        type={TextInputType.text}
+                        rightIcon={TextInputType.search}
+                        onPressRight={onPressSearch}
+                        onChangeText={newText => setSearchValue(newText)}
+                        value={searchValue}
+                        onSubmitEditing={onPressSearch}
+                    />
 
-
+                </Modal>
 
         </BackgroundView>
 

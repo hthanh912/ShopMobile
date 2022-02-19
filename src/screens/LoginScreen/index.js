@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -31,6 +31,8 @@ const LoginScreen = () => {
 
     const [email, setEmail] = useState('');
     const dispatch = useDispatch();
+
+    const inputPasswordRef = useRef(null);
 
     onSubmit = async (values) => {
         console.log('submit', values);
@@ -124,6 +126,7 @@ const LoginScreen = () => {
                     <View style={styles.formContainer}>
 
                         <TextInput
+                            onSubmitEditing={() => inputPasswordRef.current.focus()}
                             style={{ width: '80%' }}
                             rightIcon={TextInputType.email}
                             value={values.email}
@@ -136,6 +139,8 @@ const LoginScreen = () => {
                             errorText={errors.email} />
 
                         <TextInput
+                            ref={inputPasswordRef}
+                            onSubmitEditing={handleSubmit}
                             style={{ width: '80%' }}
                             rightIcon={TextInputType.password}
                             secureTextEntry={true}
@@ -168,14 +173,14 @@ const LoginScreen = () => {
                                 color={COLORS.facebook}
                                 title='Connect with Facebook' />
                         </View>
-                        
+
                         <View style={styles.textSignUpContainer}>
                             <Text style={styles.textBtn}>Don't have an account?  </Text>
                             <TouchableOpacity onPress={() => navigate(screenName.signup)}>
                                 <Text style={styles.textSignUp}>Sign up</Text>
                             </TouchableOpacity>
                         </View>
-                        
+
                     </View>
                 )}
 

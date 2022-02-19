@@ -15,7 +15,7 @@ import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-export const navigationRef = createNavigationContainerRef()
+export const navigationRef = createNavigationContainerRef();
 
 export const navigate = (name, params) => {
     if (navigationRef.isReady()) {
@@ -70,24 +70,26 @@ export const push = (name, params) => {
 }
 
 const rootTab = () => (
-    <Tab.Navigator
-        screenOptions={tabBarOption}>
 
-        <Tab.Screen
-            component={HomeStack}
-            name={screenName.homeStack}
-        />
+        <Tab.Navigator
+            screenOptions={tabBarOption}>
 
-        <Tab.Screen
-            component={BagScreen}
-            name={screenName.bag}
-        />
+            <Tab.Screen
+                component={HomeStack}
+                name={screenName.homeStack}
+            />
 
-        <Tab.Screen
-            component={UserStack}
-            name={screenName.userStack} />
+            <Tab.Screen
+                component={BagScreen}
+                name={screenName.bag}
+            />
 
-    </Tab.Navigator>
+            <Tab.Screen
+                component={UserStack}
+                name={screenName.userStack} />
+
+        </Tab.Navigator>
+
 )
 
 const HomeStack = () => (
@@ -195,7 +197,6 @@ const tabBarOption = ({ route }) => {
     return {
         headerShown: false,
         tabBarShowLabel: false,
-
         tabBarStyle: {
             borderTopColor: COLORS.white,
             height: tabBarHeight(),
@@ -217,8 +218,7 @@ const tabBarOption = ({ route }) => {
 
 
         tabBarIcon: ({ focused }) => {
-            let iconName;
-            let tabName;
+
             if (route.name === screenName.homeStack) {
                 return (
                     <View
