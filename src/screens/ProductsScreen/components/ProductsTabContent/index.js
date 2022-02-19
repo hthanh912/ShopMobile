@@ -212,7 +212,9 @@ const ProductsTabContent = ({ category, productCollection, isFeature, gender, se
                 columnWrapperStyle={styles.columnWrapperStyle}
                 numColumns={2}
                 data={listView}
-                keyExtractor={listProduct.id}
+                keyExtractor={item => {
+                    //console.log(item._id);
+                    return item._id}}
                 renderItem={({ item, index }) =>
                     <ProductCard
                         isFavorited={checkFavorite(item)}

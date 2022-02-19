@@ -11,9 +11,10 @@ import { Text } from '../../components'
 const ProductCard = ({ item, index, isLargeCard, enableFavoriteBtn, onPress, onPressIcon, isFavorited, isPlaceholder, visibleFavoriteBtn }) => {
 
     renderColors = () => item.images.map((item, i) => (
-        <View style={stylesBig.colorImageContainer}>
+        <View
+            style={stylesBig.colorImageContainer}
+            key={i} >
             <Image
-                key={i}
                 style={stylesBig.colorImage}
                 source={{ uri: getFullResUrl(item) }}
                 resizeMethod='resize'
@@ -38,6 +39,10 @@ const ProductCard = ({ item, index, isLargeCard, enableFavoriteBtn, onPress, onP
                 </PlaceholderView>
             </View>
         )
+    }
+
+    if (item.name === null) {
+        return <></>
     }
 
     if (isLargeCard && item.colors.length > 1) {
@@ -78,7 +83,7 @@ const ProductCard = ({ item, index, isLargeCard, enableFavoriteBtn, onPress, onP
                     onPress={onPressIcon}
                     style={stylesBig.iconHeartContainer}>
                     <AwesomeIcon
-                        name='heart' 
+                        name='heart'
                         size={isFavorited ? 22 : 16}
                         color={isFavorited ? COLORS.red : COLORS.white} />
                 </TouchableOpacity>

@@ -100,10 +100,10 @@ export const arrageListProduct = (list) => {
         if (list[i].colors.length > 1) {
             if (arragedList.length % 2 === 0) {
                 arragedList.push(list[i])
-                arragedList.push(null)
+                arragedList.push({_id: randomKey(), name: null})
             } else {
                 arragedList.splice(arragedList.length - 1, 0, list[i]);
-                arragedList.splice(arragedList.length - 1, 0, null);
+                arragedList.splice(arragedList.length - 1, 0, {_id: randomKey(), name: null});
             }
         } else {
             arragedList.push(list[i])
@@ -112,6 +112,8 @@ export const arrageListProduct = (list) => {
 
     return arragedList;
 }
+
+export const randomKey = () => Math.random().toString(36).replace(/[^a-z]+/g, '');
 
 export const getFullResUrl = (url) => RES_URL + url;
 
