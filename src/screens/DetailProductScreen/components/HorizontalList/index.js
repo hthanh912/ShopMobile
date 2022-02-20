@@ -20,7 +20,7 @@ export default function HorizontalList({ title, logo, description, data }) {
             <View style={{
                 flexDirection: 'row',
                 //backgroundColor: COLORS.facebook,
-                height: 30,
+                height: 25,
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginHorizontal: 20
@@ -33,7 +33,7 @@ export default function HorizontalList({ title, logo, description, data }) {
                             <Text title>{title}</Text>
 
                             <Image
-                                style={{ width: 60, height: 30, marginLeft: 10 }}
+                                style={{ width: 50, height: 25, marginLeft: 10 }}
                                 resizeMode="contain"
                                 source={{ uri: logo }} />
 
@@ -58,7 +58,6 @@ export default function HorizontalList({ title, logo, description, data }) {
 
                     </View>
                 }
-
 
             </View>
 
